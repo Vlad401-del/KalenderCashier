@@ -1,0 +1,328 @@
+/* styleCalendar.css */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Ini sudah ada dan penting */
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #eef8f3;
+}
+
+main.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+  width: 100%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.calendar {
+  display: block;
+  width: 100%;
+  max-width: 380px;
+  margin-left: auto;
+  margin-right: auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  padding: 15px; /* Padding kalender */
+  margin-bottom: 30px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  margin-bottom: 10px;
+}
+
+.monthYear {
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.1em;
+  flex-grow: 1;
+  margin: 0 10px;
+}
+
+.header button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 5px;
+}
+
+.day {
+  text-align: center;
+  padding: 8px 5px;
+  color: #999fa6;
+  font-weight: 500;
+  font-size: 0.9em;
+}
+
+.dates {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7 kolom yang sama lebar */
+  gap: 5px; /* Jarak antar tanggal */
+}
+
+.date {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px; /* Padding di dalam lingkaran tanggal, dipertahankan dari styling asli */ /* */
+  margin: auto; /* Untuk centering jika max-width tercapai dan sel lebih lebar */
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: 50%; /* Membuatnya bulat */
+
+  /* --- Perubahan untuk Responsif --- */
+  aspect-ratio: 1 / 1; /* Menjaga rasio 1:1 (persegi, menjadi lingkaran dengan border-radius) */
+  width: 100%;         /* Mengisi lebar sel grid (1fr) */
+  max-width: 38px;     /* Batas lebar maksimum, sesuai ukuran mobile asli Anda */ /* */
+  /* Tinggi akan otomatis disesuaikan oleh aspect-ratio berdasarkan lebar yang dihitung */
+
+  transition: 0.2s;
+  font-size: 0.95em; /* Ukuran font tanggal, dipertahankan dari styling asli */ /* */
+}
+
+.calendar__text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 15px;
+  padding: 10px;
+  font-size: 0.9em;
+}
+
+.calendar__text__outcomes {
+  color: #c5172e;
+  font-weight: 500;
+}
+
+.calendar__text__incomes {
+  color: #4caf50;
+  font-weight: 500;
+}
+
+.calendar__text__balance {
+  font-weight: bold;
+}
+
+.date:hover,
+.date.active {
+  background: #6a9c89;
+  color: #fff;
+}
+
+.date.inactive {
+  color: #d2d2d2d2;
+}
+
+.date.inactive:hover {
+  color: #fff;
+}
+
+/* ... (sisa styling untuk .description tidak perlu diubah untuk isu ini) ... */
+.description {
+  width: 100%;
+}
+
+.description__container {
+  display: block;
+  width: 100%;
+  max-width: 380px;
+  margin-left: auto;
+  margin-right: auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  padding: 15px;
+  margin-bottom: 30px;
+}
+
+.description__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.description__money,
+.description__datenow {
+  font-weight: 600;
+  font-size: 1em;
+}
+
+.description__datenow {
+  color: #333;
+}
+
+.description__row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 0;
+}
+
+.icon-small {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.description__item {
+  font-size: 0.95em;
+  font-weight: 500;
+}
+
+.description__item:nth-child(2) {
+  flex-grow: 1;
+  min-width: 50px;
+}
+
+.description__item:last-child {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.description__timestamp {
+  font-size: 0.8em;
+  color: #666;
+  margin-top: 2px;
+}
+
+
+/* --- Media Queries --- */
+
+/* Tablet */
+@media (min-width: 768px) {
+  .calendar,
+  .description__container {
+    max-width: 680px;
+    padding: 25px;
+  }
+
+  .monthYear {
+    font-size: 1.25em;
+  }
+
+  .day {
+    padding: 10px 5px;
+    font-size: 0.95em;
+  }
+
+  .date {
+    /* `width: 100%` dan `aspect-ratio: 1/1` diwarisi */
+    max-width: 42px; /* Perbarui max-width untuk tablet */ /* */
+    font-size: 1em; /* */
+    /* padding: 10px; /* Diwarisi, tidak perlu diubah kecuali beda */
+  }
+
+  .calendar__text {
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 1em;
+    margin-top: 20px;
+  }
+
+  .description__header {
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+  }
+
+  .description__money,
+  .description__datenow {
+    font-size: 1.1em;
+  }
+
+  .icon-small {
+    width: 28px;
+    height: 28px;
+  }
+  .description__item {
+    font-size: 1em;
+  }
+  .description__timestamp {
+    font-size: 0.85em;
+  }
+}
+
+/* Desktop/Laptop */
+@media (min-width: 1024px) {
+  .calendar,
+  .description__container {
+    max-width: 800px;
+    padding: 30px;
+  }
+
+  .monthYear {
+    font-size: 1.4em;
+  }
+
+  .header button {
+    width: 45px;
+    height: 45px;
+  }
+
+  .date {
+    /* `width: 100%` dan `aspect-ratio: 1/1` diwarisi */
+    max-width: 45px; /* Perbarui max-width untuk desktop */ /* */
+  }
+   .calendar__text {
+    font-size: 1.05em;
+    gap: 15px;
+  }
+}
+
+.btn {
+  width: 60px;
+  height: 60px;
+  font-size: 32px;
+
+  position: fixed;
+  right: 20px;
+  bottom: 5vh;
+  align-items: center;
+  line-height: 80px;
+  text-decoration: none;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+
+  z-index: 1;
+}
+
+@media (max-width: 1023px) {
+  .btn {
+    right: 50%;
+    transform: translateX(50%); /* Pusatkan horizontal */
+  }
+}
+
+.btn:active {
+  background: #6a9c89;
+}
