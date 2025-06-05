@@ -275,6 +275,15 @@ main.container {
 
 /* Desktop/Laptop */
 @media (min-width: 1024px) {
+
+  main.container {
+    flex-direction: row;
+    /* ganti tujuan */
+    align-items: flex-start;
+    justify-content: center;
+    gap: 30px;
+  }
+
   .calendar,
   .description__container {
     max-width: 800px;
