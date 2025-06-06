@@ -75,10 +75,60 @@
         href="?c=DashboardController&m=catatanKeuangan"
         class="btn btn-dark rounded-circle d-flex justify-content-center align-items-center"
         style="width: 60px; height: 60px; font-size: 32px; position: fixed"
+        id="addTransactionBtn"
       >
         +
       </a>
     </main>
+
+    <div id="addTransactionModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Tambah Transaksi Baru</h2>
+        <form id="transactionForm">
+          <div class="form-group">
+            <label for="transactionCategory">Kategori Transaksi:</label>
+            <select id="transactionCategory" name="transactionCategory" required>
+              <option value="" disabled selected>Pilih Kategori</option>
+              <option value="makanan">Makanan</option>
+              <option value="transportasi">Transportasi</option>
+              <option value="rumah-tangga">Rumah Tangga</option>
+              <option value="pemasukan">Pemasukan</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="transactionAmount">Jumlah (Rp):</label>
+            <input type="number" id="transactionAmount" name="transactionAmount" placeholder="Contoh: 50000" required min="0">
+          </div>
+          
+          <div class="form-group">
+            <label for="transactionBill">Tagihan (Bill):</label>
+            <select id="transactionBill" name="transactionBill" disabled>
+                <option value="" disabled selected>Pilih Tagihan</option>
+                <option value="listrik">Tagihan Listrik</option>
+                <option value="internet">Tagihan Internet</option>
+                <option value="air">Tagihan Air</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="transactionGoal">Tujuan (Goal):</label>
+            <select id="transactionGoal" name="transactionGoal" disabled>
+                <option value="" disabled selected>Pilih Tujuan</option>
+                <option value="sepeda">Beli Sepeda</option>
+                <option value="liburan">Dana Liburan</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="transactionNote">Catatan:</label>
+            <textarea id="transactionNote" name="transactionNote" rows="3" placeholder="Contoh: Bayar tagihan listrik bulan Juni"></textarea>
+          </div>
+          <button type="submit" class="btn-submit-transaction">Simpan</button>
+        </form>
+      </div>
+    </div>
 
     <!-- <?php include_once "footer.php" ?> -->
 
