@@ -24,7 +24,7 @@
         $$key = $value;
       }
 
-      $viewFile = "views/{$viewName}.php";
+      $viewFile = "resources/views/{$viewName}.php";
       
       if (!file_exists($viewFile)) {
         throw new NotFoundException("View file {$viewFile} not found.");
