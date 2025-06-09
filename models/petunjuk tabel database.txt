@@ -1,0 +1,58 @@
+1. table transaksi
+CREATE TABLE transaksi (
+    transaction_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    category_id INT NOT NULL,
+    amount DECIMAL(15,2) NOT NULL,
+    note TEXT,
+    date DATETIME NOT NULL,
+    bill_id INT,
+    goal_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES user(user_id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES category(category_id),
+    FOREIGN KEY (bill_id) REFERENCES bill(bill_id)
+        ON DELETE SET NULL,
+    FOREIGN KEY (goal_id) REFERENCES goal(goal_id)
+        ON DELETE SET NULL
+);
+
+2. table bill
+CREATE TABLE bill (
+    bill_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    bill VARCHAR(255) NOT NULL,
+    deadline DATE NOT NULL,
+    type VARCHAR(100) NOT NULL,
+    amount DECIMAL(15,2) NOT NULL,
+    paid_status ENUM('paid', 'unpaid') NOT NULL,
+    period VARCHAR(50), -- contoh: 'monthly', 'yearly', dst.
+    permanent BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES user(user_id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
+
+3. table goal
+CREATE TABLE goal (
+    goal_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    goal VARCHAR(255) NOT NULL,
+    target_amount DECIMAL(15,2) NOT NULL,
+    due_date DATE NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(user_id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
+
+4. table user
+CREATE TABLE user (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    privilege ENUM('admin', 'user') DEFAULT 'user'
+);
