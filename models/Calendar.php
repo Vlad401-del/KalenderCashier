@@ -7,8 +7,9 @@
     }
 
     public function getTransactionsByDate($date, $userId) {
-      $query = "
-          SELECT
+      // [MODIFIKASI] Tambahkan t.transaction_id pada query SELECT
+      $query = " SELECT
+              t.transaction_id, 
               k.category,
               k.type,
               t.amount,

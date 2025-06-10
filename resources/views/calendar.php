@@ -108,35 +108,181 @@
       </button>
     </main>
 
+    <!-- ADD -->
     <div id="addTransactionModal" class="modal">
       <div class="modal-content">
         <span class="close-btn">&times;</span>
         <h2>Tambah Transaksi Baru</h2>
-        <form id="transactionForm">
+
+        <form
+          id="transactionForm"
+          action="?c=TransactionController&m=addProcess"
+          method="post"
+        >
           <div class="form-group">
             <label for="date">Tanggal:</label>
-            <input type="date" id="date" name="date" value="<?= date('Y-m-d') ?>" required>
+            <input
+              type="date"
+              id="date"
+              name="date"
+              value="<?= date('Y-m-d') ?>"
+              required
+            />
           </div>
           <div class="form-group">
             <label for="transactionCategory">Kategori Transaksi:</label>
             <select id="transactionCategory" name="category_id" required>
               <option value="" disabled selected>Pilih Kategori</option>
               <?php foreach ($categories as $category): ?>
-                <option value="<?= $category['category_id'] ?>">
-                    <?= htmlspecialchars($category['category']) ?>
-                </option>
+              <option
+                value="<?= $category['category_id'] ?>"
+                data-type="<?= htmlspecialchars(strtolower(trim($category['type']))) ?>"
+              >
+                <?= htmlspecialchars($category['category']) ?>
+              </option>
               <?php endforeach; ?>
             </select>
           </div>
+
+          <div class="form-group" id="bill-form-group" style="display: none">
+            <label for="bill_id">Pilih Tagihan (Opsional):</label>
+            <select id="bill_id" name="bill_id">
+              <option value="">Tidak ada</option>
+              <?php foreach ($bills as $bill): ?>
+              <option value="<?= $bill['bill_id'] ?>">
+                <?= htmlspecialchars($bill['bill']) ?>
+              </option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+
+          <div class="form-group" id="goal-form-group" style="display: none">
+            <label for="goal_id">Pilih Target (Opsional):</label>
+            <select id="goal_id" name="goal_id">
+              <option value="">Tidak ada</option>
+              <?php foreach ($goals as $goal): ?>
+              <option value="<?= $goal['goal_id'] ?>">
+                <?= htmlspecialchars($goal['goal']) ?>
+              </option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+
           <div class="form-group">
             <label for="transactionAmount">Jumlah (Rp):</label>
-            <input type="number" id="transactionAmount" name="amount" placeholder="Contoh: 50000" required min="0">
+            <input
+              type="number"
+              id="transactionAmount"
+              name="amount"
+              placeholder="Contoh: 50000"
+              required
+              min="0"
+            />
           </div>
           <div class="form-group">
             <label for="transactionNote">Catatan:</label>
-            <textarea id="transactionNote" name="note" rows="3" placeholder="Contoh: Bayar tagihan listrik bulan Juni"></textarea>
+            <textarea
+              id="transactionNote"
+              name="note"
+              rows="3"
+              placeholder="Contoh: Bayar tagihan listrik bulan Juni"
+            ></textarea>
           </div>
           <button type="submit" class="btn-submit-transaction">Simpan</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- EDIT -->
+    <div id="editTransactionModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Ubah Transaksi</h2>
+
+        <form
+          id="editTransactionForm"
+          action="?c=TransactionController&m=updateProcess"
+          method="post"
+        >
+          <input type="hidden" id="editTransactionId" name="transaction_id" />
+
+          <div class="form-group">
+            <label for="editDate">Tanggal:</label>
+            <input type="date" id="editDate" name="date" required />
+          </div>
+
+          <div class="form-group">
+            <label for="editTransactionCategory">Kategori Transaksi:</label>
+            <select id="editTransactionCategory" name="category_id" required>
+              <option value="" disabled>Pilih Kategori</option>
+              <?php foreach ($categories as $category): ?>
+              <option
+                value="<?= $category['category_id'] ?>"
+                data-type="<?= htmlspecialchars(strtolower(trim($category['type']))) ?>"
+              >
+                <?= htmlspecialchars($category['category']) ?>
+              </option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+
+          <div
+            class="form-group"
+            id="edit-bill-form-group"
+            style="display: none"
+          >
+            <label for="edit_bill_id">Pilih Tagihan (Opsional):</label>
+            <select id="edit_bill_id" name="bill_id">
+              <option value="">Tidak ada</option>
+              <?php foreach ($bills as $bill): ?>
+              <option value="<?= $bill['bill_id'] ?>">
+                <?= htmlspecialchars($bill['bill']) ?>
+              </option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+
+          <div
+            class="form-group"
+            id="edit-goal-form-group"
+            style="display: none"
+          >
+            <label for="edit_goal_id">Pilih Target (Opsional):</label>
+            <select id="edit_goal_id" name="goal_id">
+              <option value="">Tidak ada</option>
+              <?php foreach ($goals as $goal): ?>
+              <option value="<?= $goal['goal_id'] ?>">
+                <?= htmlspecialchars($goal['goal']) ?>
+              </option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="editAmount">Jumlah (Rp):</label>
+            <input
+              type="number"
+              id="editAmount"
+              name="amount"
+              placeholder="Contoh: 50000"
+              required
+              min="0"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="editNote">Catatan:</label>
+            <textarea id="editNote" name="note" rows="3"></textarea>
+          </div>
+
+          <div class="form-buttons">
+            <button type="button" id="deleteTransactionBtn" class="btn-delete">
+              Hapus
+            </button>
+            <button type="submit" class="btn-submit-transaction">
+              Simpan Perubahan
+            </button>
+          </div>
         </form>
       </div>
     </div>

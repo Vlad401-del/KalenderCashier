@@ -14,30 +14,28 @@
             exit();
         }
     }
-
-    // Menampilkan halaman form tambah transaksi
+    
     public function addView() {
         $this->checkLogin();
-        // Load model untuk mengambil data kategori
         $transactionModel = $this->loadModel('Transaction');
         $categories = $transactionModel->getCategoriesByUser($_SESSION['user_id']);
-        
-        // Kirim data kategori ke view
         $this->loadView('add_transaction', ['categories' => $categories]);
     }
 
-    // Memproses data dari form
     public function addProcess() {
         $this->checkLogin();
         $response = ['status' => 'error', 'message' => 'Invalid request.'];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // [MODIFIKASI] Tangkap bill_id dan goal_id dari POST
             $data = [
                 'category_id' => $_POST['category_id'],
                 'amount' => $_POST['amount'],
                 'note' => $_POST['note'],
                 'date' => $_POST['date'],
-                'user_id' => $_SESSION['user_id']
+                'user_id' => $_SESSION['user_id'],
+                'bill_id' => isset($_POST['bill_id']) ? $_POST['bill_id'] : null,
+                'goal_id' => isset($_POST['goal_id']) ? $_POST['goal_id'] : null
             ];
 
             $transactionModel = $this->loadModel('Transaction');
@@ -48,7 +46,81 @@
             }
         }
         
-        // Kembalikan respons dalam format JSON
+        header('Content-Type: application/json');
+        echo json_encode($response);
+        exit();
+    }
+
+    public function getTransaction() {
+        $this->checkLogin();
+        
+        if (isset($_GET['id'])) {
+            $transactionId = $_GET['id'];
+            $transactionModel = $this->loadModel('Transaction');
+            $transaction = $transactionModel->getTransactionById($transactionId, $_SESSION['user_id']);
+
+            if ($transaction) {
+                header('Content-Type: application/json');
+                echo json_encode(['status' => 'success', 'data' => $transaction]);
+            } else {
+                header('Content-Type: application/json');
+                http_response_code(404);
+                echo json_encode(['status' => 'error', 'message' => 'Transaksi tidak ditemukan.']);
+            }
+        } else {
+            http_response_code(400);
+            echo json_encode(['status' => 'error', 'message' => 'ID Transaksi tidak disediakan.']);
+        }
+        exit();
+    }
+
+    // ...
+    public function updateProcess() {
+        $this->checkLogin();
+        $response = ['status' => 'error', 'message' => 'Permintaan tidak valid.'];
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // [MODIFIKASI] Pastikan bill_id dan goal_id disertakan
+            $data = [
+                'transaction_id' => $_POST['transaction_id'],
+                'category_id' => $_POST['category_id'],
+                'amount' => $_POST['amount'],
+                'note' => $_POST['note'],
+                'date' => $_POST['date'],
+                'user_id' => $_SESSION['user_id'],
+                'bill_id' => isset($_POST['bill_id']) ? $_POST['bill_id'] : null,
+                'goal_id' => isset($_POST['goal_id']) ? $_POST['goal_id'] : null
+            ];
+
+            $transactionModel = $this->loadModel('Transaction');
+            if ($transactionModel->updateTransaction($data)) {
+                $response = ['status' => 'success', 'message' => 'Transaksi berhasil diperbarui!'];
+            } else {
+                $response['message'] = 'Gagal memperbarui transaksi.';
+            }
+        }
+        
+        header('Content-Type: application/json');
+        echo json_encode($response);
+        exit();
+    }
+// ...
+
+    public function deleteProcess() {
+        $this->checkLogin();
+        $response = ['status' => 'error', 'message' => 'Permintaan tidak valid.'];
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $transactionId = $_POST['transaction_id'];
+            $transactionModel = $this->loadModel('Transaction');
+            
+            if ($transactionModel->deleteTransaction($transactionId, $_SESSION['user_id'])) {
+                $response = ['status' => 'success', 'message' => 'Transaksi berhasil dihapus!'];
+            } else {
+                $response['message'] = 'Gagal menghapus transaksi.';
+            }
+        }
+        
         header('Content-Type: application/json');
         echo json_encode($response);
         exit();
